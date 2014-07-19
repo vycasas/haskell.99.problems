@@ -1,4 +1,12 @@
+import Control.Monad
+import System.IO
+
 data Binary = Zero | One deriving (Show, Eq)
+
+-- show that is padded correctly so that Zero and One aligns when printed
+show' :: Binary -> String
+show' One = " One"
+show' Zero = "Zero"
 
 infixl 9 `not'`
 infixl 8 `and'`
@@ -37,3 +45,8 @@ tableInput01 = [(Zero, Zero), (Zero, One), (One, Zero), (One, One)]
 
 table2 :: (Binary -> Binary -> Binary) -> [(Binary, Binary, Binary)]
 table2 f = [(x, y, f x y) | (x, y) <- tableInput01]
+
+-- Same as above, but outputs using putStrLn
+table2p :: (Binary -> Binary -> Binary) -> IO ()
+table2p f = do
+    mapM_ (\(x, y, z) -> putStrLn $ (show' x) ++ " " ++ (show' y) ++ " " ++ (show' z)) $ table2 f
